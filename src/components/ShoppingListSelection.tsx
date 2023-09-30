@@ -1,12 +1,22 @@
-import { Segment } from "semantic-ui-react";
+import { Icon, Segment } from "semantic-ui-react";
 import React from "react";
 import { ShoppingList } from "../types/shoppingListTypes";
+import MainApi from "../apis/mainApi";
 
-const ShoppingListSelection = ({ name, id }: ShoppingList) => {
+type ShoppingListSelection = ShoppingList & {
+    deleteList: Function
+}
+
+const ShoppingListSelection = ({ name, id, deleteList }: ShoppingListSelection) => {
+
+    const handleDeleteButtonClick = () => {
+        deleteList(id);
+    }
 
     return (
         <Segment>
             {name}
+            <Icon name="trash alternate" onClick={handleDeleteButtonClick} />
         </Segment>
     )
 }
