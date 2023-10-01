@@ -14,7 +14,7 @@ const ShoppingListSelection = ({ name, id, deleteList }: ShoppingListSelection) 
     }
 
     return (
-        <Segment>
+        <Segment className="flex justify-between">
             {name}
             <Icon name="trash alternate" onClick={handleDeleteButtonClick} />
         </Segment>

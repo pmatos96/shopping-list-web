@@ -32,7 +32,7 @@ function App() {
   }, [])
 
   return (
-    <div className="pt-4 flex">
+    <div className="pt-4">
       <Container fluid>
         <Header>
           <Icon name='shopping cart' size='tiny' />
