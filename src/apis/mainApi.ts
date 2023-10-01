@@ -29,4 +29,17 @@ export default class MainApi {
             throw `It was not possible to call 'deleteList' Error: ${err}`;
         }
     }
+
+    static createList = async (name: string) => {
+        try {
+            let newList = await axios.post(`${this.baseUrl}shopping-lists/`, {
+                name
+            })
+
+            return newList;
+        }
+        catch (err) {
+            throw `It was not possible to call 'createList' Error: ${err}`;
+        }
+    }
 }
