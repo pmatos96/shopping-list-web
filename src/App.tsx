@@ -9,24 +9,28 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import ShoppingListPage from './pages/ShoppingListsPage';
 import { LoaderProvider, useLoader } from './components/LoaderContext';
 import Spinner from './components/Spinner';
+import ShoppingListsPage from './pages/ShoppingListsPage';
+import ListItemsPage from './pages/ListItemsPage';
 function App() {
 
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <ShoppingListPage />,
+      element: <ShoppingListsPage />,
       // children: [
       //   {
-      //     path: "team",
-      //     element: <Team />,
-      //     loader: teamLoader,
+      //     path: "lista/:listId",
+      //     element: <ListItemsPage />
       //   },
       // ],
     },
+    {
+      path: "lista/:listId",
+      element: <ListItemsPage />
+    }
   ])
 
   return (

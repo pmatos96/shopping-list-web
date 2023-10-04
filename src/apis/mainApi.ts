@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ShoppingList } from "../types/shoppingListTypes";
+import { ListItem, ShoppingList } from "../types/shoppingListTypes";
 
 export default class MainApi {
 
@@ -40,6 +40,22 @@ export default class MainApi {
         }
         catch (err) {
             throw `It was not possible to call 'createList' Error: ${err}`;
+        }
+    }
+
+    static getItemsByList = async (listId: number): Promise<ListItem[]> => {
+        try {
+            let response = await axios.get(`${this.baseUrl}shopping-lists/${listId}/items/`);
+
+            if (response.status === 200) {
+                return response.data;
+            }
+            else {
+                throw `Status ${response.status}`;
+            }
+        }
+        catch (err) {
+            throw `It was not possible to call 'getItemsByList' Error: ${err}`;
         }
     }
 }

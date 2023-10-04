@@ -7,7 +7,7 @@ import { Container, Divider, Header, Icon, Segment } from "semantic-ui-react";
 import ShoppingListSelection from "../components/ShoppingListSelection";
 import { useLoader } from "../components/LoaderContext";
 
-const ShoppingListPage = () => {
+const ShoppingListsPage = () => {
 
     const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
     const [creationModalOpen, setCreationModalOpen] = useState<boolean>(false);
@@ -85,4 +85,4 @@ const ShoppingListPage = () => {
     );
 }
 
-export default ShoppingListPage;
+export default ShoppingListsPage;
