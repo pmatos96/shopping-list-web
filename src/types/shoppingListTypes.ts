@@ -26,3 +26,8 @@ export type ListItemsPageElement = {
     listId: number,
     listName: string
 }
+
+export type GroupedItemsBySection = {
+    section: Section,
+    items: ListItem[]
+}
