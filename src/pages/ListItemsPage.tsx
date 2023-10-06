@@ -3,12 +3,15 @@ import { GroupedItemsBySection, ListItem } from "../types/shoppingListTypes";
 import { useLoader } from "../components/LoaderContext";
 import MainApi from "../apis/mainApi";
 import { useParams } from "react-router-dom";
+import { Accordion } from "semantic-ui-react";
+import SectionGroupingBoard from "../components/SectionGroupingBoard";
 
 const ListItemsPage = () => {
 
     const { listId } = useParams()
 
-    const [listItems, setListItems] = useState<ListItem[]>();
+    const [listItems, setListItems] = useState<ListItem[]>([]);
+    const [activeItemIndex, setActiveItemIndex] = useState<number>(0);
 
     const { showLoader, hideLoader } = useLoader();
 
@@ -41,9 +44,17 @@ const ListItemsPage = () => {
 
     return (
         <div className="pt-4">
-            {(listItems || []).map(item => {
-                return (<div>{item.product.name}</div>)
-            })}
+            <Accordion className="p-4 w-screen" styled>
+                {(listItems && groupItemsByProductSection(listItems) || []).map((sectionGroupedItems: GroupedItemsBySection, index: number) => {
+                    return <SectionGroupingBoard
+                        section={sectionGroupedItems.section}
+                        items={sectionGroupedItems.items}
+                        index={index}
+                        activeIndex={activeItemIndex}
+                        setActive={setActiveItemIndex}
+                    />
+                })}
+            </Accordion>
         </div>
     )
 }
