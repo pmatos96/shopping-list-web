@@ -52,6 +52,7 @@ const ListItemsPage = () => {
                         index={index}
                         activeIndex={activeItemIndex}
                         setActive={setActiveItemIndex}
+                        listId={Number(listId)}
                     />
                 })}
             </Accordion>

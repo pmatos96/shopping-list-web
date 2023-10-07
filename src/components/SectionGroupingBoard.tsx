@@ -6,10 +6,11 @@ import ListItemSelection from "./ListItemSelection";
 type SectionGroupingBoardInput = GroupedItemsBySection & {
     index: number,
     activeIndex: number,
-    setActive: Function
+    setActive: Function,
+    listId: number
 }
 
-const SectionGroupingBoard = ({ section, items, index, activeIndex, setActive }: SectionGroupingBoardInput) => {
+const SectionGroupingBoard = ({ section, items, index, activeIndex, setActive, listId }: SectionGroupingBoardInput) => {
 
     useEffect(() => {
         console.log(items)
@@ -29,7 +30,13 @@ const SectionGroupingBoard = ({ section, items, index, activeIndex, setActive }:
             <Accordion.Content active={activeIndex === index}>
                 <Segment.Group>
                     {items.map(item => {
-                        return <ListItemSelection id={item.id} amount={item.amount} product={item.product} />
+                        return <ListItemSelection
+                            listId={listId}
+                            id={item.id}
+                            amount={item.amount}
+                            product={item.product}
+                            done={item.done}
+                        />
                     })}
                 </Segment.Group>
             </Accordion.Content>

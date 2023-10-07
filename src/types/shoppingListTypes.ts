@@ -19,7 +19,9 @@ type Product = {
 export type ListItem = {
     id: number,
     product: Product,
-    amount: number
+    amount: number,
+    listId: number,
+    done: boolean
 }
 
 export type ListItemsPageElement = {

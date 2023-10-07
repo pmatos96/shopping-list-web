@@ -58,4 +58,20 @@ export default class MainApi {
             throw `It was not possible to call 'getItemsByList' Error: ${err}`;
         }
     }
+
+    static setOrUnsetItemChecked = async (listId: number, id: number) => {
+        try {
+            let response = await axios.put(`${this.baseUrl}shopping-lists/${listId}/items/${id}/set-or-unset`);
+
+            if (response.status === 200) {
+                return response.data;
+            }
+            else {
+                throw `Status ${response.status}`;
+            }
+        }
+        catch (err) {
+            throw `It was not possible to call 'setOrUnsetItemChecked' Error: ${err}`;
+        }
+    }
 }
