@@ -74,4 +74,32 @@ export default class MainApi {
             throw `It was not possible to call 'setOrUnsetItemChecked' Error: ${err}`;
         }
     }
+
+    static updateListItemAmount = async (listId: number, id: number, amount: number) => {
+        try {
+            let response = await axios.put(`${this.baseUrl}shopping-lists/${listId}/items/`, {
+                id,
+                amount
+            });
+
+            if (response.status === 200) {
+                return response.data;
+            }
+            else {
+                throw `Status ${response.status}`;
+            }
+        }
+        catch (err) {
+            throw `It was not possible to call 'updateListItemAmount' Error: ${err}`;
+        }
+    }
+
+    static deleteListItem = async (listId: number, id: number) => {
+        try {
+            await axios.delete(`${this.baseUrl}shopping-lists/${listId}/items/${id}`);
+        }
+        catch (err) {
+            throw `It was not possible to call 'deleteListItem' Error: ${err}`;
+        }
+    }
 }

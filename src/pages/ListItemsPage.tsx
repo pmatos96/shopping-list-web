@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { GroupedItemsBySection, ListItem } from "../types/shoppingListTypes";
 import { useLoader } from "../components/LoaderContext";
 import MainApi from "../apis/mainApi";
@@ -6,9 +6,11 @@ import { useParams } from "react-router-dom";
 import { Accordion } from "semantic-ui-react";
 import SectionGroupingBoard from "../components/SectionGroupingBoard";
 
+const ItemsUpdatingContext = createContext(() => { });
+
 const ListItemsPage = () => {
 
-    const { listId } = useParams()
+    const { listId } = useParams();
 
     const [listItems, setListItems] = useState<ListItem[]>([]);
     const [activeItemIndex, setActiveItemIndex] = useState<number>(0);
@@ -43,21 +45,27 @@ const ListItemsPage = () => {
     }, [])
 
     return (
-        <div className="pt-4">
-            <Accordion className="p-4 w-screen" styled>
-                {(listItems && groupItemsByProductSection(listItems) || []).map((sectionGroupedItems: GroupedItemsBySection, index: number) => {
-                    return <SectionGroupingBoard
-                        section={sectionGroupedItems.section}
-                        items={sectionGroupedItems.items}
-                        index={index}
-                        activeIndex={activeItemIndex}
-                        setActive={setActiveItemIndex}
-                        listId={Number(listId)}
-                    />
-                })}
-            </Accordion>
-        </div>
+        <ItemsUpdatingContext.Provider value={setUpdatedListItems}>
+            <div className="pt-4">
+                <Accordion className="p-4 w-screen" styled>
+                    {(listItems && groupItemsByProductSection(listItems) || []).map((sectionGroupedItems: GroupedItemsBySection, index: number) => {
+                        return <SectionGroupingBoard
+                            section={sectionGroupedItems.section}
+                            items={sectionGroupedItems.items}
+                            index={index}
+                            activeIndex={activeItemIndex}
+                            setActive={setActiveItemIndex}
+                            listId={Number(listId)}
+                        />
+                    })}
+                </Accordion>
+            </div>
+        </ItemsUpdatingContext.Provider>
     )
+}
+
+export function useItemsUpdatingContext() {
+    return useContext(ItemsUpdatingContext)
 }
 
 export default ListItemsPage;
