@@ -47,7 +47,7 @@ const ShoppingListsPage = () => {
     }, [])
 
     return (
-        <div className="pt-4">
+        <div className="p-4 w-screen">
             <ShoppingListCreationModal
                 createShoppingList={createShoppingList}
                 open={creationModalOpen}
@@ -61,14 +61,14 @@ const ShoppingListsPage = () => {
                 onConfirm={deleteShoppingList}
                 auxiliarData={listIdOnDeleting}
             />
-            <Container fluid>
+            <Container fluid className="w-full">
                 <Header>
                     <Icon name='shopping cart' size='tiny' />
                     <Header.Content as={'h1'}>Minhas listas</Header.Content>
                 </Header>
                 <Divider />
                 <Icon name="plus" size="big" onClick={() => setCreationModalOpen(true)} />
-                <Segment.Group>
+                <Segment.Group className="w-full">
                     {
                         (shoppingLists || []).map((list: ShoppingList) => {
                             return <ShoppingListSelection

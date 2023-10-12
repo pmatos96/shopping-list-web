@@ -10,7 +10,7 @@ type Section = {
     color: string
 }
 
-type Product = {
+export type Product = {
     id: number,
     name: string,
     section: Section

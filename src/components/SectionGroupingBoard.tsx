@@ -22,10 +22,9 @@ const SectionGroupingBoard = ({ section, items, index, activeIndex, setActive, l
                 active={activeIndex === index}
                 index={index}
                 onClick={() => setActive(index)}
-            // style={{ backgroundColor: `#${section.color}`, opacity: 0.5 }}
             >
                 <Icon name='dropdown' />
-                {section.name}
+                <span style={{ color: `#${section.color}` }}>{section.name}</span>
             </Accordion.Title>
             <Accordion.Content active={activeIndex === index}>
                 <Segment.Group>

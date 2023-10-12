@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ListItem, ShoppingList } from "../types/shoppingListTypes";
+import { ListItem, Product, ShoppingList } from "../types/shoppingListTypes";
 
 export default class MainApi {
 
@@ -100,6 +100,43 @@ export default class MainApi {
         }
         catch (err) {
             throw `It was not possible to call 'deleteListItem' Error: ${err}`;
+        }
+    }
+
+    static getProducts = async () => {
+        try {
+            const response = await axios.get(`${this.baseUrl}products/`);
+            if (response.status === 200) {
+                return response.data;
+            }
+            else {
+                throw `Status ${response.status}`;
+            }
+
+        }
+        catch (err) {
+            throw `It was not possible to call 'getProducts' Error: ${err}`;
+        }
+    }
+
+    static createListItem = async (product: Product, amount: number, listId: number) => {
+        try {
+
+            let response = await axios.post(`${this.baseUrl}shopping-lists/${listId}/items/`, {
+                productId: product.id,
+                amount,
+                shoppingListId: listId
+            })
+            console.log(response)
+            if (response.status === 200) {
+                return response.data;
+            }
+            else {
+                throw `Status ${response.status}`;
+            }
+        }
+        catch (err) {
+            throw `It was not possible to call 'createListItem' Error: ${err}`;
         }
     }
 }
