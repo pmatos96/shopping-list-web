@@ -7,7 +7,7 @@ import {
 import { useLoader } from "../components/LoaderContext";
 import MainApi from "../apis/mainApi";
 import { useNavigate, useParams } from "react-router-dom";
-import { Accordion, Icon, Progress } from "semantic-ui-react";
+import { Accordion, Header, Icon, Progress } from "semantic-ui-react";
 import SectionGroupingBoard from "../components/SectionGroupingBoard";
 import ListItemCreationModal from "../components/ListItemCreationModal";
 
@@ -18,6 +18,7 @@ const ListItemsPage = () => {
 
   const navigate = useNavigate();
 
+  const [listName, setListName] = useState<string>();
   const [listItems, setListItems] = useState<ListItem[]>([]);
   const [activeItemIndex, setActiveItemIndex] = useState<number>(0);
   const [creationModalOpen, setCreationModalOpen] = useState<boolean>(false);
@@ -30,6 +31,11 @@ const ListItemsPage = () => {
       .then(setListItems)
       .then(() => hideLoader());
   };
+
+  const retrieveListName = () => {
+    MainApi.getListById(Number(listId))
+      .then(data => {setListName(data.name)})
+  }
 
   const groupItemsByProductSection = (items: ListItem[]) => {
     return items.reduce((acc: GroupedItemsBySection[], item) => {
@@ -66,6 +72,7 @@ const ListItemsPage = () => {
 
   useEffect(() => {
     setUpdatedListItems();
+    retrieveListName();
   }, []);
 
   return (
@@ -78,6 +85,9 @@ const ListItemsPage = () => {
             className="cursor-pointer"
             onClick={() => setCreationModalOpen(true)}
           />
+          <Header>
+            <Header.Content as={'h1'}>{listName}</Header.Content>
+          </Header>
           <Icon
             name="arrow left"
             size="big"

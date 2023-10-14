@@ -21,6 +21,22 @@ export default class MainApi {
         }
     }
 
+    static getListById = async (id: number): Promise<ShoppingList> => {
+        try {
+            const response = await axios.get(`${this.baseUrl}shopping-lists/${id}`);
+            if (response.status === 200) {
+                return response.data;
+            }
+            else {
+                throw `Status ${response.status}`;
+            }
+
+        }
+        catch (err) {
+            throw `It was not possible to call 'getListById' Error: ${err}`;
+        }
+    }
+
     static deleteList = async (id: number) => {
         try {
             await axios.delete(`${this.baseUrl}shopping-lists/${id}`)
