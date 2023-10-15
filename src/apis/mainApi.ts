@@ -3,7 +3,7 @@ import { ListItem, Product, ShoppingList } from "../types/shoppingListTypes";
 
 export default class MainApi {
 
-    static baseUrl = "http://localhost:3000/" || process.env.REACT_APP_API_BASE_URL
+    static baseUrl = process.env.REACT_APP_API_BASE_URL
 
     static getLists = async (): Promise<ShoppingList[]> => {
         try {
