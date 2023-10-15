@@ -6,13 +6,18 @@ import GenericConfirmModal from "../components/GenericConfirmModal";
 import { Container, Divider, Header, Icon, Segment } from "semantic-ui-react";
 import ShoppingListSelection from "../components/ShoppingListSelection";
 import { useLoader } from "../components/LoaderContext";
+import ShoppingListDuplicatingModal from "../components/ShoppingListDuplicatingModal";
 
 const ShoppingListsPage = () => {
 
     const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
     const [creationModalOpen, setCreationModalOpen] = useState<boolean>(false);
+
     const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
     const [listIdOnDeleting, setListIdOnDeleting] = useState<number>();
+
+    const [duplicateModalOpen, setDuplicateModalOpen] = useState<boolean>(false);
+    const [listIdOnDuplicating, setListIdOnDuplicating] = useState<number>(0);
 
     const { showLoader, hideLoader } = useLoader();
 
@@ -26,6 +31,11 @@ const ShoppingListsPage = () => {
     const handleDeleteButtonClick = (id: number) => {
         setListIdOnDeleting(id);
         setDeleteModalOpen(true);
+    }
+
+    const handleDuplicateButtonClick = (id: number) => {
+        setListIdOnDuplicating(id);
+        setDuplicateModalOpen(true);
     }
 
     const deleteShoppingList = async (id: number) => {
@@ -42,6 +52,13 @@ const ShoppingListsPage = () => {
         setUpdatedShoppingLists();
     }
 
+    const duplicateShoppingList = async (id: number, name: string) => {
+        showLoader();
+        await MainApi.duplicateList(id,name);
+        hideLoader();
+        setUpdatedShoppingLists();
+    }
+
     useEffect(() => {
         setUpdatedShoppingLists();
     }, [])
@@ -52,6 +69,12 @@ const ShoppingListsPage = () => {
                 createShoppingList={createShoppingList}
                 open={creationModalOpen}
                 setOpen={setCreationModalOpen}
+            />
+            <ShoppingListDuplicatingModal
+                duplicateShoppingList={duplicateShoppingList}
+                open={duplicateModalOpen}
+                setOpen={setDuplicateModalOpen}
+                listId={listIdOnDuplicating}
             />
             <GenericConfirmModal
                 title='Remover lista'
@@ -76,6 +99,7 @@ const ShoppingListsPage = () => {
                                 id={list.id}
                                 name={list.name}
                                 deleteList={() => handleDeleteButtonClick(list.id)}
+                                duplicateList={() => handleDuplicateButtonClick(list.id)}
                             />
                         })
                     }

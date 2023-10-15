@@ -5,15 +5,20 @@ import MainApi from "../apis/mainApi";
 import { useNavigate } from "react-router-dom";
 
 type ShoppingListSelection = ShoppingList & {
-    deleteList: Function
+    deleteList: Function,
+    duplicateList: Function
 }
 
-const ShoppingListSelection = ({ name, id, deleteList }: ShoppingListSelection) => {
+const ShoppingListSelection = ({ name, id, deleteList, duplicateList }: ShoppingListSelection) => {
 
     const navigate = useNavigate();
 
     const handleDeleteButtonClick = () => {
         deleteList(id);
+    }
+
+    const copyButtonClick = () => {
+        duplicateList(id);
     }
 
     const goToListItemsPage = () => {
@@ -24,7 +29,10 @@ const ShoppingListSelection = ({ name, id, deleteList }: ShoppingListSelection) 
     return (
         <Segment className="flex justify-between">
             <span className="cursor-pointer" onClick={goToListItemsPage}>{name}</span>
-            <Icon name="trash alternate" onClick={handleDeleteButtonClick} />
+            <div className="w-[15vw] flex justify-between">
+                <Icon name="trash alternate" onClick={handleDeleteButtonClick} />
+                <Icon className="ml-2" name="copy" onClick={copyButtonClick} />
+            </div>
         </Segment>
     )
 }

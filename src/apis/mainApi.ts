@@ -155,4 +155,17 @@ export default class MainApi {
             throw `It was not possible to call 'createListItem' Error: ${err}`;
         }
     }
+
+    static duplicateList = async (id: number, name: string) => {
+        try {
+            let newList = await axios.post(`${this.baseUrl}shopping-lists/${id}/duplicate`, {
+                name
+            })
+
+            return newList;
+        }
+        catch (err) {
+            throw `It was not possible to call 'duplicateList' Error: ${err}`;
+        }
+    }
 }
