@@ -13,6 +13,7 @@ import { LoaderProvider, useLoader } from './components/LoaderContext';
 import Spinner from './components/Spinner';
 import ShoppingListsPage from './pages/ShoppingListsPage';
 import ListItemsPage from './pages/ListItemsPage';
+import LoginPage from './pages/LoginPage';
 function App() {
 
 
@@ -30,6 +31,10 @@ function App() {
     {
       path: "lista/:listId",
       element: <ListItemsPage />
+    },
+    {
+      path: "login",
+      element: <LoginPage/>
     }
   ])
 
