@@ -10,10 +10,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Accordion, Header, Icon, Progress } from "semantic-ui-react";
 import SectionGroupingBoard from "../components/SectionGroupingBoard";
 import ListItemCreationModal from "../components/ListItemCreationModal";
+import withAuthentication from "../auth/WithAuthentication";
 
 const ItemsUpdatingContext = createContext(() => {});
 
-const ListItemsPage = () => {
+const ListItemsPage: React.FC = () => {
   const { listId } = useParams();
 
   const navigate = useNavigate();
@@ -138,4 +139,4 @@ export function useItemsUpdatingContext() {
   return useContext(ItemsUpdatingContext);
 }
 
-export default ListItemsPage;
+export default withAuthentication(ListItemsPage);

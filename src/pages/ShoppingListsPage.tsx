@@ -7,8 +7,9 @@ import { Container, Divider, Header, Icon, Segment } from "semantic-ui-react";
 import ShoppingListSelection from "../components/ShoppingListSelection";
 import { useLoader } from "../components/LoaderContext";
 import ShoppingListDuplicatingModal from "../components/ShoppingListDuplicatingModal";
+import withAuthentication from "../auth/WithAuthentication";
 
-const ShoppingListsPage = () => {
+const ShoppingListsPage: React.FC = () => {
 
     const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
     const [creationModalOpen, setCreationModalOpen] = useState<boolean>(false);
@@ -109,4 +110,4 @@ const ShoppingListsPage = () => {
     );
 }
 
-export default ShoppingListsPage;
+export default withAuthentication(ShoppingListsPage);

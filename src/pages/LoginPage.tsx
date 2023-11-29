@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import auth from "../firebase";
 
 const LoginPage = () => {
@@ -43,6 +43,17 @@ const LoginPage = () => {
             })
     }
 
+    const logoutOut = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        signOut(auth)
+            .then(userCredential => {
+                console.log(userCredential);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
     return <div className="p-4 w-screen h-screen flex items-center justify-center">
         <Segment >
             <Form>
@@ -65,6 +76,7 @@ const LoginPage = () => {
                 </Form.Field>
                 <Button positive fluid onClick={signIn}>Login</Button>
                 <Button fluid onClick={signUp}>Cadastre-se</Button>
+                <Button negative fluid onClick={logoutOut}>Sair</Button>
             </Form>
         </Segment>
     </div>
