@@ -11,10 +11,11 @@ import { Accordion, Header, Icon, Progress } from "semantic-ui-react";
 import SectionGroupingBoard from "../components/SectionGroupingBoard";
 import ListItemCreationModal from "../components/ListItemCreationModal";
 import withAuthentication from "../auth/WithAuthentication";
+import { UserData } from "../types/authTypes";
 
 const ItemsUpdatingContext = createContext(() => {});
 
-const ListItemsPage: React.FC = () => {
+const ListItemsPage: React.FC<{user: UserData}> = ({ user }: {user: UserData} ) => {
   const { listId } = useParams();
 
   const navigate = useNavigate();

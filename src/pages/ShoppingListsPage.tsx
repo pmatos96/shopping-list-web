@@ -8,8 +8,9 @@ import ShoppingListSelection from "../components/ShoppingListSelection";
 import { useLoader } from "../components/LoaderContext";
 import ShoppingListDuplicatingModal from "../components/ShoppingListDuplicatingModal";
 import withAuthentication from "../auth/WithAuthentication";
+import { UserData } from "../types/authTypes";
 
-const ShoppingListsPage: React.FC = () => {
+const ShoppingListsPage: React.FC<{user: UserData}> = ({ user }: {user: UserData} ) => {
 
     const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
     const [creationModalOpen, setCreationModalOpen] = useState<boolean>(false);
