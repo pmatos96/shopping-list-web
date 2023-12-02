@@ -13,6 +13,7 @@ const withAuthentication = (WrappedComponent: React.FC) => {
                 if (authUser) {
                     setUser(authUser);
                 } else {
+                    setUser(null);
                     navigate('/login'); // Redirect to home if not logged in
                 }
             });
