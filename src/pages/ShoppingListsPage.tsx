@@ -3,14 +3,16 @@ import { ShoppingList } from "../types/shoppingListTypes";
 import MainApi from "../apis/mainApi";
 import ShoppingListCreationModal from "../components/ShoppingListCreationModal";
 import GenericConfirmModal from "../components/GenericConfirmModal";
-import { Container, Divider, Header, Icon, Segment } from "semantic-ui-react";
+import { Button, Container, Divider, Header, Icon, Segment } from "semantic-ui-react";
 import ShoppingListSelection from "../components/ShoppingListSelection";
 import { useLoader } from "../components/LoaderContext";
 import ShoppingListDuplicatingModal from "../components/ShoppingListDuplicatingModal";
 import withAuthentication from "../auth/WithAuthentication";
-import { UserData } from "../types/authTypes";
+import  { User } from "firebase/auth";
+import { logoutOut } from "../auth/authFunctions";
+import { useNavigate } from "react-router-dom";
 
-const ShoppingListsPage: React.FC<{user: UserData}> = ({ user }: {user: UserData} ) => {
+const ShoppingListsPage: React.FC<{user: User}> = ({ user }: {user: User} ) => {
 
     const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
     const [creationModalOpen, setCreationModalOpen] = useState<boolean>(false);
@@ -22,10 +24,12 @@ const ShoppingListsPage: React.FC<{user: UserData}> = ({ user }: {user: UserData
     const [listIdOnDuplicating, setListIdOnDuplicating] = useState<number>(0);
 
     const { showLoader, hideLoader } = useLoader();
+    const navigate = useNavigate();
 
     const setUpdatedShoppingLists = () => {
         showLoader()
-        MainApi.getLists()
+
+        MainApi.getListsByUser(user)
             .then(setShoppingLists)
             .then(() => hideLoader());
     }
@@ -42,21 +46,21 @@ const ShoppingListsPage: React.FC<{user: UserData}> = ({ user }: {user: UserData
 
     const deleteShoppingList = async (id: number) => {
         showLoader();
-        await MainApi.deleteList(id);
+        await MainApi.deleteList(id, user);
         hideLoader();
         setUpdatedShoppingLists();
     }
 
     const createShoppingList = async (name: string) => {
         showLoader();
-        await MainApi.createList(name);
+        await MainApi.createList(name, user);
         hideLoader();
         setUpdatedShoppingLists();
     }
 
     const duplicateShoppingList = async (id: number, name: string) => {
         showLoader();
-        await MainApi.duplicateList(id,name);
+        await MainApi.duplicateList(id,name, user);
         hideLoader();
         setUpdatedShoppingLists();
     }
@@ -87,9 +91,12 @@ const ShoppingListsPage: React.FC<{user: UserData}> = ({ user }: {user: UserData
                 auxiliarData={listIdOnDeleting}
             />
             <Container fluid className="w-full">
-                <Header>
-                    <Icon name='shopping cart' size='tiny' />
-                    <Header.Content as={'h1'}>Minhas listas</Header.Content>
+                <Header className="flex justify-between">
+                    <div className="flex items-center">
+                        <Icon name='shopping cart' size='large' />
+                        <Header.Content as={'h1'}>Minhas listas</Header.Content>
+                    </div>
+                    <Button onClick={(e) => logoutOut(e, () => navigate("/"))}>Sair</Button>
                 </Header>
                 <Divider />
                 <Icon name="plus" size="big" onClick={() => setCreationModalOpen(true)} />

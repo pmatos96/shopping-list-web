@@ -11,11 +11,11 @@ import { Accordion, Header, Icon, Progress } from "semantic-ui-react";
 import SectionGroupingBoard from "../components/SectionGroupingBoard";
 import ListItemCreationModal from "../components/ListItemCreationModal";
 import withAuthentication from "../auth/WithAuthentication";
-import { UserData } from "../types/authTypes";
+import { User } from "firebase/auth";
 
 const ItemsUpdatingContext = createContext(() => {});
 
-const ListItemsPage: React.FC<{user: UserData}> = ({ user }: {user: UserData} ) => {
+const ListItemsPage: React.FC<{user: User}> = ({ user }: {user: User} ) => {
   const { listId } = useParams();
 
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const ListItemsPage: React.FC<{user: UserData}> = ({ user }: {user: UserData} ) 
   };
 
   const retrieveListName = () => {
-    MainApi.getListById(Number(listId))
+    MainApi.getListById(Number(listId), user)
       .then(data => {setListName(data.name)})
   }
 

@@ -1,15 +1,22 @@
 import axios from "axios"
 import { ListItem, Product, ShoppingList } from "../types/shoppingListTypes";
+import { User } from "firebase/auth";
 
 export default class MainApi {
 
     static baseUrl = process.env.REACT_APP_API_BASE_URL
 
-    static getLists = async (): Promise<ShoppingList[]> => {
+    static getListsByUser = async (user: User): Promise<ShoppingList[]> => {
         try {
-            const response = await axios.get(`${this.baseUrl}shopping-lists/`);
+            const token = await user.getIdToken();
+            const response = await axios.get(`${this.baseUrl}shopping-lists/`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
             if (response.status === 200) {
-                return response.data;
+                return response.data?.resp;
             }
             else {
                 throw `Status ${response.status}`;
@@ -17,13 +24,21 @@ export default class MainApi {
 
         }
         catch (err) {
-            throw `It was not possible to call 'getLists' Error: ${err}`;
+            throw `It was not possible to call 'getListsByUser' Error: ${err}`;
         }
     }
 
-    static getListById = async (id: number): Promise<ShoppingList> => {
+    static getListById = async (id: number, user: User): Promise<ShoppingList> => {
+
+        const token = await user.getIdToken();
+
         try {
-            const response = await axios.get(`${this.baseUrl}shopping-lists/${id}`);
+            const response = await axios.get(`${this.baseUrl}shopping-lists/${id}`,{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
             if (response.status === 200) {
                 return response.data;
             }
@@ -37,19 +52,34 @@ export default class MainApi {
         }
     }
 
-    static deleteList = async (id: number) => {
+    static deleteList = async (id: number, user: User) => {
+
+        const token = await user.getIdToken();
         try {
-            await axios.delete(`${this.baseUrl}shopping-lists/${id}`)
+            await axios.delete(`${this.baseUrl}shopping-lists/${id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
         }
         catch (err) {
             throw `It was not possible to call 'deleteList' Error: ${err}`;
         }
     }
 
-    static createList = async (name: string) => {
+    static createList = async (name: string, user: User) => {
+
+        const token = await user.getIdToken();
         try {
             let newList = await axios.post(`${this.baseUrl}shopping-lists/`, {
                 name
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
             })
 
             return newList;
@@ -143,7 +173,6 @@ export default class MainApi {
                 amount,
                 shoppingListId: listId
             })
-            console.log(response)
             if (response.status === 200) {
                 return response.data;
             }
@@ -156,10 +185,16 @@ export default class MainApi {
         }
     }
 
-    static duplicateList = async (id: number, name: string) => {
+    static duplicateList = async (id: number, name: string, user: User) => {
+        const token = await user.getIdToken();
         try {
             let newList = await axios.post(`${this.baseUrl}shopping-lists/${id}/duplicate`, {
                 name
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
             })
 
             return newList;

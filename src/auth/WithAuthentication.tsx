@@ -4,7 +4,7 @@ import  { User } from "firebase/auth";
 import auth from '../firebase';
 import { UserData } from '../types/authTypes';
 
-const withAuthentication = (WrappedComponent: React.FC<{user: UserData}>) => {
+const withAuthentication = (WrappedComponent: React.FC<{user: User}>) => {
     const WithAuthentication: React.FC = () => {
         const [user, setUser] = useState<User | null>(null);
         const navigate = useNavigate();
@@ -22,7 +22,7 @@ const withAuthentication = (WrappedComponent: React.FC<{user: UserData}>) => {
             return () => unsubscribe();
         }, [navigate]);
       
-          return user ? <WrappedComponent user={{id: user.uid} || {}} /> : null;
+          return user ? <WrappedComponent user={user} /> : null;
     }
 
     return WithAuthentication;

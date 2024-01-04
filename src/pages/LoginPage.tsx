@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { Button, Form, Segment } from "semantic-ui-react";
+import { Button, Form, Message, Segment } from "semantic-ui-react";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import auth from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+    const navigate = useNavigate();
 
     const handleInputFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.currentTarget;
@@ -14,8 +19,10 @@ const LoginPage = () => {
         switch(name){
             case 'email':
                 setEmail(value);
+                break;
             case 'password':
-                setPassword(value)
+                setPassword(value);
+                break;
             default:
                 break;
         }
@@ -23,40 +30,33 @@ const LoginPage = () => {
 
     const signIn = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        setErrorMessage(null);
+        setSuccessMessage(null);
         signInWithEmailAndPassword(auth, email, password)
             .then(userCredential => {
-                console.log(userCredential);
+                navigate("/")
             })
             .catch(error => {
-                console.log(error);
+                setErrorMessage("Login ou senha inválidos");
             })
     }
 
     const signUp = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        setErrorMessage(null);
+        setSuccessMessage(null);
         createUserWithEmailAndPassword(auth, email, password)
             .then(userCredential => {
-                console.log(userCredential);
+                setSuccessMessage("Cadastro realizado com sucesso!")
             })
             .catch(error => {
-                console.log(error);
-            })
-    }
-
-    const logoutOut = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        signOut(auth)
-            .then(userCredential => {
-                console.log(userCredential);
-            })
-            .catch(error => {
-                console.log(error);
+                setErrorMessage("Não foi possível fazer o cadastro");
             })
     }
 
     return <div className="p-4 w-screen h-screen flex items-center justify-center">
         <Segment >
-            <Form>
+            <Form error={!!errorMessage}>
                 <Form.Field>
                     <label>E-mail</label>
                     <input 
@@ -74,9 +74,10 @@ const LoginPage = () => {
                         name='password'
                     />
                 </Form.Field>
+                {!!errorMessage && <Message error header='Algo deu errado' content={errorMessage}/>}
+                {!!successMessage && <Message positive content={successMessage}/>}
                 <Button positive fluid onClick={signIn}>Login</Button>
                 <Button fluid onClick={signUp}>Cadastre-se</Button>
-                <Button negative fluid onClick={logoutOut}>Sair</Button>
             </Form>
         </Segment>
     </div>
