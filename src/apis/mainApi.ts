@@ -1,6 +1,7 @@
 import axios from "axios"
 import { ListItem, Product, ShoppingList } from "../types/shoppingListTypes";
 import { User } from "firebase/auth";
+import auth from "../firebase";
 
 export default class MainApi {
 
@@ -8,7 +9,8 @@ export default class MainApi {
 
     static getListsByUser = async (user: User): Promise<ShoppingList[]> => {
         try {
-            const token = await user.getIdToken();
+            // const token = await user.getIdToken();
+            const token = await auth.currentUser?.getIdToken(true);
             const response = await axios.get(`${this.baseUrl}shopping-lists/`, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -140,6 +142,25 @@ export default class MainApi {
         }
     }
 
+    static updateListItemObservation = async (listId: number, id: number, observation: string) => {
+        try {
+            let response = await axios.put(`${this.baseUrl}shopping-lists/${listId}/items/`, {
+                id,
+                observation
+            });
+
+            if (response.status === 200) {
+                return response.data;
+            }
+            else {
+                throw `Status ${response.status}`;
+            }
+        }
+        catch (err) {
+            throw `It was not possible to call 'updateListItemObservation' Error: ${err}`;
+        }
+    }
+
     static deleteListItem = async (listId: number, id: number) => {
         try {
             await axios.delete(`${this.baseUrl}shopping-lists/${listId}/items/${id}`);
@@ -165,12 +186,13 @@ export default class MainApi {
         }
     }
 
-    static createListItem = async (product: Product, amount: number, listId: number) => {
+    static createListItem = async (product: Product, amount: number, listId: number, observation: string) => {
         try {
 
             let response = await axios.post(`${this.baseUrl}shopping-lists/${listId}/items/`, {
                 productId: product.id,
                 amount,
+                observation,
                 shoppingListId: listId
             })
             if (response.status === 200) {

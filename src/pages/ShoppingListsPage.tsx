@@ -11,6 +11,7 @@ import withAuthentication from "../auth/WithAuthentication";
 import  { User } from "firebase/auth";
 import { logoutOut } from "../auth/authFunctions";
 import { useNavigate } from "react-router-dom";
+import auth from "../firebase";
 
 const ShoppingListsPage: React.FC<{user: User}> = ({ user }: {user: User} ) => {
 

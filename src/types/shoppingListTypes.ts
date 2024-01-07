@@ -20,6 +20,7 @@ export type ListItem = {
     id: number,
     product: Product,
     amount: number,
+    observation?: string,
     listId: number,
     done: boolean
 }

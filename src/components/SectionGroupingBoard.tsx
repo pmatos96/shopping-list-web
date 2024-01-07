@@ -12,10 +12,6 @@ type SectionGroupingBoardInput = GroupedItemsBySection & {
 
 const SectionGroupingBoard = ({ section, items, index, activeIndex, setActive, listId }: SectionGroupingBoardInput) => {
 
-    useEffect(() => {
-        console.log(items)
-    }, [])
-
     return (
         <>
             <Accordion.Title
@@ -34,6 +30,7 @@ const SectionGroupingBoard = ({ section, items, index, activeIndex, setActive, l
                             id={item.id}
                             amount={item.amount}
                             product={item.product}
+                            observation={item.observation}
                             done={item.done}
                         />
                     })}

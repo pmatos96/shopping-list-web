@@ -16,6 +16,7 @@ const ListItemCreationModal = ({ createListItem, open, setOpen, listId }: ListIt
 
     const [product, setProduct] = useState<Product>();
     const [amount, setAmount] = useState<number>(1);
+    const [observation, setObservation] = useState<string | null>("");
     const [errorMessage, setErrorMessage] = useState<string>();
     const [productOptions, setProductOptions] = useState<Product[]>([]);
 
@@ -33,7 +34,7 @@ const ListItemCreationModal = ({ createListItem, open, setOpen, listId }: ListIt
         }
         else {
             setErrorMessage('');
-            createListItem(product, amount, listId).then(() => {
+            createListItem(product, amount, listId, observation).then(() => {
                 setOpen(false);
             })
         }
@@ -92,6 +93,15 @@ const ListItemCreationModal = ({ createListItem, open, setOpen, listId }: ListIt
                             type="number"
                             onChange={(e) => { setAmount(Number(e.target.value)) }}
                             placeholder="Quantidade do produto"
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Observação</label>
+                        <input
+                            value={String(observation)}
+                            type="text"
+                            onChange={(e) => { setObservation(e.target.value) }}
+                            placeholder="Observações opcionais"
                         />
                     </Form.Field>
                 </Form>

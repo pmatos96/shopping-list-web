@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import  { User } from "firebase/auth";
 import auth from '../firebase';
-import { UserData } from '../types/authTypes';
 
 const withAuthentication = (WrappedComponent: React.FC<{user: User}>) => {
     const WithAuthentication: React.FC = () => {

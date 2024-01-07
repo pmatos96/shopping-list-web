@@ -60,10 +60,11 @@ const ListItemsPage: React.FC<{user: User}> = ({ user }: {user: User} ) => {
   const createListItem = async (
     product: Product,
     amount: number,
-    listId: number
+    listId: number,
+    observation: string
   ) => {
     showLoader();
-    await MainApi.createListItem(product, amount, listId);
+    await MainApi.createListItem(product, amount, listId, observation);
     setUpdatedListItems();
     hideLoader();
   };
