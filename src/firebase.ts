@@ -1,17 +1,16 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { browserLocalPersistence, getAuth, setPersistence } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import env from "./env";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBpezrbObBpu79fQn1RmJ_0zdYBHYX5pOU",
-  authDomain: "shopping-list-c137f.firebaseapp.com",
-  projectId: "shopping-list-c137f",
-  storageBucket: "shopping-list-c137f.appspot.com",
-  messagingSenderId: "557161475729",
-  appId: "1:557161475729:web:b9984c244a607697fe9930"
+  apiKey: env.FIREBASE_API_KEY,
+  authDomain: env.FIREBASE_AUTH_DOMAIN,
+  projectId: env.FIREBASE_PROJECT_ID,
+  storageBucket: env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: env.FIREBASE_APP_ID
 };
 
 // Initialize Firebase
